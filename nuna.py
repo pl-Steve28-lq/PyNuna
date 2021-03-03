@@ -1,3 +1,5 @@
+from utils import *
+
 class Nuna:
   def __init__(self, error=True):
     self.error = error
@@ -39,7 +41,7 @@ class Nuna:
       if com == '!':
         for i in self.stack:
           result += chr(i)
-    print(result)
+    stdout(result)
     return self.stack
   
   def getLast(self):
@@ -49,3 +51,8 @@ class Nuna:
   
   def push(self, item):
     self.stack.append(item)
+
+code = '''눈나..나..주...나..........거나..........거....나..........거나..........거나....누........나.........♥
+누나..나..나..거나..나.....나.....거...나..나.....거나..나.....주..눈나..........나..........♥!'''
+n = Nuna()
+print(n.execute(code))
