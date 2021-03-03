@@ -23,7 +23,6 @@ class Nuna:
     return res
   
   def execute(self, code):
-    self.stack = []
     result = ''
     tok = self.tokenize(code)
     for i in tok:
@@ -51,8 +50,36 @@ class Nuna:
   
   def push(self, item):
     self.stack.append(item)
+  
+  def clear(self):
+    self.stack = []
+  
+def generate(text):
+  res = ''
+  _targ = list(map(lambda v: ord(v), text))
+  targ = []
+  idx = 0
+  while idx < len(_targ)-1:
+    targ.append(_targ[idx+1]-_targ[idx])
+    idx += 1
+  
+  first = True
+  for i in [_targ[0]] + targ:
+    if i == 0: res += '!'; continue
 
-code = '''눈나..나..주...나..........거나..........거....나..........거나..........거나....누........나.........♥
-누나..나..나..거나..나.....나.....거...나..나.....거나..나.....주..눈나..........나..........♥!'''
-n = Nuna()
-print(n.execute(code))
+    intv = 0
+    while len(Factorize(abs(i))) == 1 and abs(i) > 6:
+      i -= sign(i); intv += 1
+
+    l = abs(i)
+    s = sign(i)
+    f = Factorize(l)
+
+    res += choice('눈누')
+    for i in f:
+      for _ in [0]*f[i]:
+        res += f'나{"."*i}'
+    res += f'주{"."*intv}거{"."*(2*intv)}{""if first else"♥💕"[s==1]}!\n'
+    first = False
+
+  return res
