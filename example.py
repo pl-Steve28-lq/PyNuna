@@ -6,6 +6,7 @@ code = '''눈나..나..주...나..........거나..........거....나..........�
 n = Nuna()
 print(n.execute(code))
 
+print()
 n.clear() # Clear stack
 
 code = generate("Hello, World!") # Generate code that prints "Hello, World!" in Nunalang
