@@ -2,6 +2,10 @@
 Nuna Language Interpreter Implemented with Python <br>
 Original Details : [nunalang/nuna](https://github.com/nunalang/nuna)
 
+## Download
+```pip install nuna``` <br>
+[View at Pypi](https://pypi.org/project/Nuna/)
+
 ## Example
 ```Python
 from nuna import Nuna, generate
