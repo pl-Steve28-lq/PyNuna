@@ -2,6 +2,10 @@
 Nuna Language Interpreter Implemented with Python <br>
 Original Details : [nunalang/nuna](https://github.com/nunalang/nuna)
 
+## Warning
+누나 v0.3 을 구현하는 도중 실행에 오류가 있는데 왜 났는지 모르겠습니다.
+지금 레포에 있는 코드는 v0.2 구현체 입니다.
+
 ## Download
 ```pip install nuna``` <br>
 [View at Pypi](https://pypi.org/project/Nuna/)
@@ -46,7 +50,3 @@ Hello, World!
 [33]
 '''
 ```
-
-## Warning
-누나 v0.3 에서 논의되는 "끝의 두 요소를 Pop 하고 둘의 차를 Push 하기" 명령이 '♥' 으로 구현되어 있습니다. <br>
-이는 나중에 수정 될 수 있습니다.
