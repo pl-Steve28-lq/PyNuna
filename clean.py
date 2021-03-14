@@ -5,7 +5,7 @@ def cleanPycache():
   for root, dirs, files in os.walk('./'):
     for i in dirs:
       if 'pycache' in i:
-        removes.append(root + i)
+        removes.append(root + '/' + i)
   for i in removes:
     shutil.rmtree(i)
 

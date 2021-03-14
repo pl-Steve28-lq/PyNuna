@@ -6,53 +6,87 @@ class Nuna:
     self.stack = []
 
   def tokenize(self, code):
-    com = '눈누나주거!💕♥'
+    com = '눈누난나주거!헤응💕흐읏'
     res = []
-    prev = ''
-    cnt = idx = column = lineno = 0
-    for i in code+'!':
-      if i in com:
-        if prev: res.append([prev, cnt+(not cnt)])
-        prev = i; cnt = 0
-      elif i == '.': cnt += 1
-      elif i == '\n': lineno += 1; column = 0
-      elif self.error:
-        raise Exception(f'Invalid character "{i}" found. '
-        '(Line {lineno+1} Column {column+1}, Char {idx})')
-      idx += 1; column += 1
+    cnt = scnt = qcnt = idx = column = lineno = 0
+    st = Stream(code)
+
+    while not st.isEOF():
+      c = st.get()
+
+      if c == '\n':
+        lineno += 1; column = 0
+        continue
+      if self.error and c not in com:
+        raise Exception(f'Invalid character "{c}" found. '
+        f'(Line {lineno+1} Column {column+1}, Char {st.i})')
+
+      g = st.get('.으')
+      dotCtx = ['base', 0, 0, []]
+
+      while g:
+        if g == '.': dotCtx[1] += 1
+        if g == '으': dotCtx[2] += 1
+        g = st.get('.으')
+      res.append([c, dotCtx])
+
+      column += 1
+      cnt = 0; scnt = 0
     return res
   
   def execute(self, code):
     result = ''
     tok = self.tokenize(code)
-    for i in tok:
-      com, cnt = i
-      if com in '눈누': self.stack.append(cnt)
-      if com == '나': self.push(self.getLast()*cnt)
-      if com == '주': self.push(self.getLast()-cnt)
-      if com == '거': self.push(self.getLast()+cnt)
-      # Warning : Unofficial Command (♥)
-      if com in '💕♥': 
-        p = self.stack.pop()
-        q = self.stack.pop()
-        self.stack.append(q+(2*(com == '💕')-1)*p)
-      # Warning : Unofficial Command (♥)
-      if com == '!':
-        for i in self.stack:
-          result += chr(i)
+    idx = 0
+    length = len(tok)
+    while idx < length:
+      com, ctx = tok[idx]
+      W = self.evaluate(ctx)
+      if com in '눈누': self.push(W)
+      if com in '난나': self.push(self.pop()*W)
+      if com == '주': self.push(self.pop()-W)
+      if com == '거': self.push(self.pop()+W)
+      if com == '흐':
+        self.push(self.pop()**W)
+        idx += 1
+        if idx < length:
+          if tok[idx][0] == '읏': continue
+        raise Exception(f'Keyword "흐" must need following Keyword "읏".')
+      if com == '💕': self.push(self.pop()+self.pop())
+      if com == '헤': self.pop()
+      if com == '응': self.push(-(self.pop()-self.pop()))
+      if com == '!': result += chr(self.getLast())
+      idx += 1
     stdout(result)
     return self.stack
   
+  def pop(self):
+    if self.stack: return self.stack.pop()
+    return 0
+  
   def getLast(self):
-    if self.stack:
-      return self.stack.pop()
-    raise Exception('Operate with empty stack')
+    if self.stack: return self.stack[-1]
+    return 0
+  
+  def getSecondLast(self):
+    if len(self.stack)>1: return self.stack[-2]
+    return 0
   
   def push(self, item):
     self.stack.append(item)
   
   def clear(self):
     self.stack = []
+  
+  def evaluate(self, ctx):
+    typ, cnt, scnt, child = ctx
+    nrml = cnt + scnt*self.getSecondLast()
+    val = sum(map(self.evaluate, child)) + nrml
+    wval = val + ((not val) and (not cnt))
+    if typ == 'exp': return 1<<wval
+    if typ == 'base': return wval
+
+    
   
 def generate(text):
   res = ''
@@ -66,6 +100,7 @@ def generate(text):
   first = True
   for i in [_targ[0]] + targ:
     if i == 0: res += '!'; continue
+    if not first: res += '\n'
 
     intv = 0
     while len(Factorize(abs(i))) == 1 and abs(i) > 6:
@@ -78,8 +113,8 @@ def generate(text):
     res += choice('눈누')
     for i in f:
       for _ in [0]*f[i]:
-        res += f'나{"."*i}'
-    res += f'주{"."*intv}거{"."*(2*intv)}{""if first else"♥💕"[s==1]}!\n'
+        res += f'나{"."*i}' + f'흐읏{"."*rand(2, 5)}'*rand(0,1)
+    
+    res += f'나주{"."*intv}거{"."*(2*intv)}{""if first else"응 💕"[s+1]}!'
     first = False
-
   return res

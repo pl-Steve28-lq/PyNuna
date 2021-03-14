@@ -1,13 +1,3 @@
-# PyNuna
-Nuna Language Interpreter Implemented with Python <br>
-Original Details : [nunalang/nuna](https://github.com/nunalang/nuna)
-
-## Download
-```pip install nuna``` <br>
-[View at Pypi](https://pypi.org/project/Nuna)
-
-## Example
-```Python
 from nuna.nuna import Nuna, generate
 
 code = '''눈나..흐.....읏..나주..거....흐...읏...
@@ -27,4 +17,3 @@ n.clear() # Clear Stack
 
 code2 = generate('Hello, World!') # Generate code that prints 'Hello, World!'
 n.execute(code2) # Execute
-```

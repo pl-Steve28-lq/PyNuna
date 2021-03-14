@@ -1,11 +1,12 @@
 from sys import stdin, stdout
-from random import choices
+from random import randint, choices
 
 def stdout(*text, _sep=' ', _end='\n'):
   stdout._encoding = 'utf-8'
   print(*text, sep=_sep, end=_end, flush=True)
 
 def stdin():
+  stdin._encoding = 'utf-8'
   res = stdin.readline()
   return res[:-1] if res[-1] == '\n' else res
 
@@ -13,13 +14,27 @@ def sign(x):
   return 1-2*(x < 0)
 
 def choice(a): return choices(a)[0]
+def rand(a,b): return randint(a,b)
 
-# Prime Check Function
-def isPrime(n):
-  if n == 1: return False
-  for k in range(2, int(n**0.5)):
-    if n%k == 0: return False
-  return True
+class Stream:
+  def __init__(self, s):
+    self.s = s
+    self.L = len(s)
+    self.i = 0
+  
+  def isEOF(self):
+    return self.i >= self.L
+
+  def get(self, s=''):
+    if self.isEOF(): return
+    it = self.s[self.i]
+    if s:
+      if it in s:
+        self.i += 1
+        return it
+      return
+    self.i += 1
+    return it
 
 # Factorization of number
 def Factorize(n):
