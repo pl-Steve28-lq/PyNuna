@@ -7,7 +7,7 @@ Original Details : [nunalang/nuna](https://github.com/nunalang/nuna)
 [View at Pypi](https://pypi.org/project/Nuna)
 
 ## Features
-* Output 은 `sys.stdout.\_encoding = 'utf-8'` 를 시행한 뒤 print 함수를 이용합니다.
+* Output 은 `sys.stdout._encoding = 'utf-8'` 를 시행한 뒤 print 함수를 이용합니다.
   <br> 정확히는 다음 함수를 이용합니다.
 ```Python
 def stdout(*text, _sep=' ', _end='\n'):
